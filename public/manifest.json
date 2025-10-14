@@ -1,0 +1,10 @@
+{
+    "manifest_version": 3,
+    "name": "Fancy Text SPX6900",
+    "version": "1.0.0",
+    "description": "A fancy text stylizer for web any website.",
+    "icons": {
+        "48": "images/icon.png",
+        "128": "images/icon.png"
+    }
+  }
