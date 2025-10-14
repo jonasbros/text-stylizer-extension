@@ -43,7 +43,7 @@ function createMenu(selectedText: string, _position: Position): void {
   menuContainer.style.cssText = `
     position: fixed;
     top: 20px;
-    left: 20px;
+    right: 20px;
     z-index: 999999;
     background: #0f172a;
     border: 1px solid #fbbf24;

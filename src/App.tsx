@@ -43,7 +43,7 @@ function App() {
         <ol className="spxaeon:text-lg spxaeon:list-decimal spxaeon:list-inside spxaeon:marker:spxaeon:text-amber-500">
           <li>Toggle menu below to enable/disable</li>
           <li>Select text in input fields</li>
-          <li>Choose style from top-left menu!</li>
+          <li>Choose style from top-right menu!</li>
         </ol>
         
         <div className="spxaeon:mt-4 spxaeon:flex spxaeon:items-center spxaeon:justify-center spxaeon:gap-3">
