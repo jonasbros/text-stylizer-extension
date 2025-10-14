@@ -62,15 +62,22 @@ function createMenu(selectedText: string, _position: Position): void {
   // Style options with preview text
   const styles: StyleOption[] = [
     { name: 'Bold', key: 'bold', preview: '𝐁𝐨𝐥𝐝' },
-    { name: 'Italic', key: 'italic', preview: '𝐼𝑡𝑎𝑙𝑖𝑐' },
-    { name: 'Bold Italic', key: 'boldItalic', preview: '𝑩𝒐𝒍𝒅 𝑰𝒕𝒂𝒍𝒊𝒄' },
+    { name: 'Bold Italic', key: 'boldItalic', preview: '𝑩𝒐𝒍𝒅 𝑰𝒕𝒂𝒍𝒊𝒸' },
     { name: 'Script', key: 'script', preview: '𝓢𝓬𝓻𝓲𝓹𝓽' },
+    { name: 'Bold Script', key: 'boldScript', preview: '𝓑𝓸𝓵𝓭 𝓢𝓬𝓻𝓲𝓹𝓽' },
     { name: 'Fraktur', key: 'fraktur', preview: '𝔉𝔯𝔞𝔨𝔱𝔲𝔯' },
+    { name: 'Bold Fraktur', key: 'boldFraktur', preview: '𝕱𝖗𝖆𝖐𝖙𝖚𝖗' },
     { name: 'Double Struck', key: 'doubleStruck', preview: '𝔻𝕠𝕦𝕓𝕝𝕖' },
     { name: 'Monospace', key: 'monospace', preview: '𝙼𝚘𝚗𝚘𝚜𝚙𝚊𝚌𝚎' },
+    { name: 'Fullwidth', key: 'fullwidth', preview: 'Ｆｕｌｌｗｉｄｔｈ' },
     { name: 'Circled', key: 'circled', preview: 'Ⓒⓘⓡⓒⓛⓔ' },
+    { name: 'Negative Circled', key: 'negativeCircled', preview: '🅝🅔🅖🅐🅣🅘🅥🅔' },
+    { name: 'Squared', key: 'squared', preview: '🅂🅀🅄🄰🅁🄴🄳' },
+    { name: 'Negative Squared', key: 'negativeSquared', preview: '🅽🅴🅶🅰🆃🅸🆅🅴' },
     { name: 'Tiny Caps', key: 'tinycaps', preview: 'ᴛɪɴʏ ᴄᴀᴘs' },
-    { name: 'Fullwidth', key: 'fullwidth', preview: 'Ｆｕｌｌｗｉｄｔｈ' }
+    { name: 'Old English', key: 'oldEnglish', preview: '𝔒𝔩𝔡 𝔈𝔫𝔤𝔩𝔦𝔰𝔥' },
+    { name: 'Upside Down', key: 'upsideDown', preview: 'uʍop ǝpᴉsd∩' },
+    { name: 'Zalgo', key: 'zalgo', preview: 'Z̴a̷l̸g̵o̶' }
   ];
   
   styles.forEach(style => {
