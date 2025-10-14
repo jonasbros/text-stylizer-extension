@@ -1,4 +1,4 @@
-import { fancyTextMap } from './fancyTextMap';
+import { fancyTextMap } from './fancy-text-map';
 
 export default function fancyText(text: string, style: string) {
   const s = fancyTextMap[style];
