@@ -3,6 +3,17 @@ declare const chrome: any;
 
 console.log('SPX6900 Text Stylizer content script loaded');
 
+// Listen for toggle messages from popup
+chrome.runtime.onMessage.addListener((message: any, _sender: any, sendResponse: any) => {
+  if (message.type === 'TOGGLE_MENU') {
+    isMenuEnabled = message.enabled;
+    if (!isMenuEnabled) {
+      removeMenu();
+    }
+    sendResponse({ success: true });
+  }
+});
+
 interface Position {
   x: number;
   y: number;
@@ -18,9 +29,11 @@ let menuContainer: HTMLDivElement | null = null;
 let currentElement: HTMLInputElement | HTMLTextAreaElement | null = null;
 let currentSelectionStart: number | null = null;
 let currentSelectionEnd: number | null = null;
+let isMenuEnabled: boolean = true;
+let debounceTimer: number | null = null;
 
 // Create and inject the StyleContextMenu
-function createMenu(selectedText: string, position: Position): void {
+function createMenu(selectedText: string, _position: Position): void {
   // Remove existing menu
   removeMenu();
   
@@ -29,8 +42,8 @@ function createMenu(selectedText: string, position: Position): void {
   menuContainer.id = 'spx6900-text-menu';
   menuContainer.style.cssText = `
     position: fixed;
-    top: ${position.y}px;
-    left: ${position.x}px;
+    top: 20px;
+    left: 20px;
     z-index: 999999;
     background: #0f172a;
     border: 1px solid #fbbf24;
@@ -41,8 +54,8 @@ function createMenu(selectedText: string, position: Position): void {
     display: flex;
     flex-direction: column;
     gap: 2px;
-    width: 250px;
-    max-height: 300px;
+    width: 300px;
+    max-height: 350px;
     overflow-y: auto;
   `;
   
@@ -165,53 +178,82 @@ function replaceSelectedText(styledText: string): void {
   }
 }
 
-// Handle text selection
-document.addEventListener('mouseup', () => {
-  setTimeout(() => {
-    console.log('Mouse up detected');
-    const activeElement = document.activeElement;
-    let selectedText = '';
-    let rect: DOMRect | null = null;
+// Function to handle text selection (used by both mouse and keyboard events)
+function handleTextSelection() {
+  console.log('Text selection detected (debounced)');
+  const activeElement = document.activeElement;
+  let selectedText = '';
+  let rect: DOMRect | null = null;
+  
+  // Only work with input/textarea elements and if menu is enabled
+  if (isMenuEnabled && activeElement && (activeElement instanceof HTMLInputElement || activeElement instanceof HTMLTextAreaElement)) {
+    const start = activeElement.selectionStart;
+    const end = activeElement.selectionEnd;
     
-    // Only work with input/textarea elements
-    if (activeElement && (activeElement instanceof HTMLInputElement || activeElement instanceof HTMLTextAreaElement)) {
-      const start = activeElement.selectionStart;
-      const end = activeElement.selectionEnd;
+    if (start !== null && end !== null && start !== end) {
+      selectedText = activeElement.value.substring(start, end);
+      rect = activeElement.getBoundingClientRect();
       
-      if (start !== null && end !== null && start !== end) {
-        selectedText = activeElement.value.substring(start, end);
-        rect = activeElement.getBoundingClientRect();
+      // Store current selection for later use
+      currentElement = activeElement;
+      currentSelectionStart = start;
+      currentSelectionEnd = end;
+      
+      if (selectedText && selectedText.length > 0 && rect) {
+        // Position is not used since menu is now in bottom-right corner
+        const position: Position = { x: 0, y: 0 };
         
-        // Store current selection for later use
-        currentElement = activeElement;
-        currentSelectionStart = start;
-        currentSelectionEnd = end;
-        
-        if (selectedText && selectedText.length > 0 && rect) {
-          const position: Position = {
-            x: Math.max(10, rect.left + window.scrollX),
-            y: Math.max(10, rect.top + window.scrollY - 50)
-          };
-          
-          // Ensure menu doesn't go off screen
-          if (position.x + 300 > window.innerWidth) {
-            position.x = window.innerWidth - 310;
-          }
-          
-          createMenu(selectedText, position);
-        } else {
-          removeMenu();
-        }
+        createMenu(selectedText, position);
       } else {
         removeMenu();
-        currentElement = null;
-        currentSelectionStart = null;
-        currentSelectionEnd = null;
       }
     } else {
       removeMenu();
+      currentElement = null;
+      currentSelectionStart = null;
+      currentSelectionEnd = null;
     }
-  }, 10);
+  } else {
+    removeMenu();
+  }
+}
+
+// Handle text selection with debounce (mouse)
+document.addEventListener('mouseup', () => {
+  // Clear existing timer
+  if (debounceTimer) {
+    clearTimeout(debounceTimer);
+  }
+  
+  // Set new timer with 300ms delay
+  debounceTimer = window.setTimeout(handleTextSelection, 300);
+});
+
+// Handle Ctrl+A in input/textarea elements
+document.addEventListener('keydown', (e: KeyboardEvent) => {
+  if (e.ctrlKey && e.key === 'a') {
+    const activeElement = document.activeElement;
+    
+    // Only trigger for input/textarea elements
+    if (isMenuEnabled && activeElement && (activeElement instanceof HTMLInputElement || activeElement instanceof HTMLTextAreaElement)) {
+      // Clear existing timer
+      if (debounceTimer) {
+        clearTimeout(debounceTimer);
+      }
+      
+      // Set timer to check selection after Ctrl+A completes
+      debounceTimer = window.setTimeout(() => {
+        // Double check that text is actually selected after Ctrl+A
+        const start = activeElement.selectionStart;
+        const end = activeElement.selectionEnd;
+        const value = activeElement.value;
+        
+        if (start === 0 && end === value.length && value.length > 0) {
+          handleTextSelection();
+        }
+      }, 50); // Shorter delay for keyboard since action is immediate
+    }
+  }
 });
 
 // Hide menu when clicking elsewhere
