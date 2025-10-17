@@ -32,7 +32,7 @@ function App() {
   }; 
 
   return (
-    <main className="spxaeon:relative spxaeon:flex spxaeon:items-center spxaeon:justify-between spxaeon:flex-col spxaeon:w-[400px] spxaeon:h-[400px] spxaeon:bg-slate-900 spxaeon:text-amber-50 spxaeon:p-4 spxaeon:py-8 spxaeon:text-center spxaeon:border-amber-400 spxaeon:border-2">
+    <main className="spxaeon:relative spxaeon:flex spxaeon:items-center spxaeon:justify-between spxaeon:flex-col spxaeon:w-[400px] spxaeon:h-[400px] spxaeon:bg-slate-900 spxaeon:text-amber-50 spxaeon:p-4 spxaeon:pt-8 spxaeon:pb-6 spxaeon:text-center spxaeon:border-amber-400 spxaeon:border-2">
       <h1 className="spxaeon:text-2xl spxaeon:font-bold spxaeon:justify-self-start">
         𝐹𝒶𝓃𝒸𝓎 𝕋𝕖𝕩𝕥 SPX6900
         <img src="/images/icon.png" alt="SPX6900" className="spxaeon:inline spxaeon:w-10 spxaeon:h-10 spxaeon:ml-2 spxaeon:mt-[-0.5rem]" />
@@ -43,7 +43,7 @@ function App() {
         <ol className="spxaeon:text-lg spxaeon:list-decimal spxaeon:list-inside spxaeon:marker:spxaeon:text-amber-500">
           <li>Toggle menu below to enable/disable</li>
           <li>Select text in input fields</li>
-          <li>Choose style from top-right menu!</li>
+          <li>Choose style from the menu!</li>
         </ol>
         
         <div className="spxaeon:mt-4 spxaeon:flex spxaeon:items-center spxaeon:justify-center spxaeon:gap-3">
@@ -62,9 +62,8 @@ function App() {
       </div>
 
       <div className="spxaeon:flex spxaeon:flex-col spxaeon:gap-1 spxaeon:text-sm">
-        <a href="https://www.spx6900.com/" target="_blank">Brought to you by SPX6900</a>
-        <a href="https://www.patreon.com/cw/JonasPerez" target="_blank">You can support what I do on Patreon ❤️</a>
-        <p>&copy; 2025 Jonas Perez 💹🧲</p>
+        <span>Brought to you by <a href="https://www.spx6900.com/" target="_blank" className="spxaeon:underline">SPX6900</a></span>
+        <p>&copy; 2025 Jones 💹🧲</p>
       </div>
     </main>
   )
